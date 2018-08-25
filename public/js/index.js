@@ -1,3 +1,5 @@
+// in deze file gebruiken we geen arrow functies om de compatibiliteit met andere
+// browsers dan chrome te vergroten
 var socket = io();
 
 socket.on('connect', function () {
@@ -10,4 +12,18 @@ socket.on('disconnect', function () {
 
 socket.on('newMessage', function (message) {
   console.log('newMessage', message);
+  var li = jQuery('<li></li>');
+  li.text(`${message.from}: ${message.text}`);
+
+  jQuery('#messages').append(li);
+});
+
+jQuery('#message-form').on('submit', function (e) {
+  e.preventDefault();
+  socket.emit('createMessage', {
+    from: 'User',
+    text: jQuery('[name=message]').val()
+  }, function () {
+
+  });
 });
